@@ -8,6 +8,12 @@ public class Cafe extends Building {
     private int nCreams; // The number of "splashes" of cream remaining in inventory
     private int nCups; // The number of cups remaining in inventory
 
+    // defined specifically for the overloaded restock() method
+    private int initialCoffeeOunces; // The initial number of ounces of coffee in inventory
+    private int initialSugarPackets; // The initial number of sugar packets in inventory
+    private int initialCreams; //The initial number of "splashes" of cream in inventory
+    private int initialCups; // The initial number of cups in inventory
+
     /**
      * Constructs a new Cafe object with the given parameters.
      *
@@ -26,6 +32,10 @@ public class Cafe extends Building {
         this.nSugarPackets = initialSugarPackets;
         this.nCreams = initialCreams;
         this.nCups = initialCups;
+        this.initialCoffeeOunces = initialCoffeeOunces;
+        this.initialSugarPackets = initialSugarPackets;
+        this.initialCreams = initialCreams;
+        this.initialCups = initialCups;
     }
 
     /**
@@ -52,11 +62,51 @@ public class Cafe extends Building {
         }
     }
 
+    /**
+     * Sells a cup of coffee with the specified size.
+     *
+     * @param size          The size of the coffee in ounces.
+     */
+    public void sellCoffee(int size) {
+        if (nCups > 0) { // Check if there are available cups before selling coffee
+            if (size <= nCoffeeOunces && nSugarPackets <= 2 && nCreams <= 2) {
+                this.nCoffeeOunces -= size;
+                this.nSugarPackets -= 2;
+                this.nCreams -= 2;
+                this.nCups--;
+                System.out.println("Coffee sold successfully!");
+            } else {
+                System.out.println("Insufficient inventory to sell coffee.");
+                restock(size, nSugarPackets, nCreams, 1); // Restock with one cup
+            }
+        } else {
+            System.out.println("No cups available to sell coffee.");
+        }
+    }
+
+    /**
+     * Restocks ingredients for coffee with the specified number of items.
+     *
+     * @param nCoffeeOunces         The number of the coffee ounces brough to cafe.
+     * @param nSugarPackets         The number of the sugar packets brough to cafe.
+     * @param nCreams               The number of the cream packets brough to cafe.
+     * @param nCups                 The number of the cups brough to cafe.
+     */
     private void restock(int nCoffeeOunces, int nSugarPackets, int nCreams, int nCups) {
         this.nCoffeeOunces += nCoffeeOunces;
         this.nSugarPackets += nSugarPackets;
         this.nCreams += nCreams;
         this.nCups += nCups;
+    }
+    /**
+     *
+     * Restocks ingredients for coffee with the inital number of items.
+     */
+    private void restock() {
+        this.nCoffeeOunces = initialCoffeeOunces;
+        this.nSugarPackets = initialSugarPackets;
+        this.nCreams = initialCreams;
+        this.nCups = initialCups;
     }
 
     /**
